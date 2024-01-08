@@ -34,6 +34,11 @@ export default function HomeLoan() {
         const labelPositionTenure = useRef(new Animated.Value(0)).current;
         const { label, labelFocused, labelNotFocused } = styles;
 
+
+ const [emi, setEMI] = useState(null);
+  const [totalInterest, setTotalInterest] = useState(null);
+
+
   const handlePrincipleAmountChange = (text) => {
     setPrincipleAmount(text);
   };
@@ -220,6 +225,44 @@ export default function HomeLoan() {
  const handleButtonPress = (buttonName) => {
     alert(`Button ${buttonName} clicked!`);
   };
+
+
+const handleCalculate = () => {
+    // Validate input values
+    const principleAmountValue = parseFloat(principleAmount);
+    const annualInterestRateValue = parseFloat(annualInterestRate);
+    const tenureValue = parseFloat(tenure);
+
+    if (isNaN(principleAmountValue) || isNaN(annualInterestRateValue) || isNaN(tenureValue)) {
+      // Display an error message or handle invalid input
+      console.error('Invalid input. Please enter valid numeric values.');
+      return;
+    }
+
+    // Convert annual interest rate to monthly interest rate
+    const monthlyInterestRate = (annualInterestRateValue / 12) / 100;
+
+    // Calculate EMI
+    const emi =
+      (principleAmountValue * monthlyInterestRate) /
+      (1 - Math.pow(1 + monthlyInterestRate, -tenureValue));
+
+        // Calculate total interest
+        const totalInterest = emi * tenureValue - principleAmountValue;
+
+        // Display the calculated EMI and total interest or use them as needed
+        console.log('Monthly EMI:', emi.toFixed(2));
+        console.log('Total Interest:', totalInterest.toFixed(2));
+
+
+            setEMI(emi.toFixed(2));
+            setTotalInterest(totalInterest.toFixed(2));
+  };
+
+
+
+
+
   return (
 
  <SafeAreaView style={styles.container}>
@@ -341,7 +384,7 @@ export default function HomeLoan() {
            <Text style={styles.buttonTextReset}>Reset</Text>
          </TouchableOpacity>
 
-         <TouchableOpacity style={styles.buttonCalculate} onPress={() => handleButtonPress('Two')} >
+         <TouchableOpacity style={styles.buttonCalculate} onPress={handleCalculate} >
           <FontAwesome name="check" size={20} color="#cfa006" />
                 <Text style={styles.buttonTextCalculate}>Calculate</Text>
          </TouchableOpacity>
@@ -352,10 +395,23 @@ export default function HomeLoan() {
 
 
 
-        <View   style = {styles.section}   >
+        <View   style = {styles.ResultSection}   >
 
-                     <Text style={styles.sectionTitle}>Result</Text>
+                     <Text style={styles.sectionTitle}>EMI Per Month</Text>
+                            {/* Display EMI and Total Interest in a row */}
+                                  {emi !== null && totalInterest !== null && (
+                                    <View style={styles.resultRow}>
+                                      <View style={styles.resultItem}>
+                                        <Text style={styles.resultLabel}>EMI:</Text>
+                                        <Text style={styles.resultValue}>{emi}</Text>
+                                      </View>
 
+                                      <View style={styles.resultItem}>
+                                        <Text style={styles.resultLabel}>Total Interest:</Text>
+                                        <Text style={styles.resultValue}>{totalInterest}</Text>
+                                      </View>
+                                    </View>
+                                  )}
          </View>
 
 

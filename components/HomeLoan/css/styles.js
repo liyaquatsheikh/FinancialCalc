@@ -15,14 +15,26 @@ const styles = StyleSheet.create({
         borderBottomColor: 'white',
       },
 
+ ResultSection: {
+          marginBottom: 12,
+          backgroundColor: "#3b3a38",
+          paddingLeft:18,
+          paddingRight:18,
+          paddingTop: 6,
+          paddingBottom: 10,
+          borderRadius: 12,
+          alignItems : 'center'
+        },
+
        section: {
           marginBottom: 12,
           backgroundColor: "#3b3a38",
           paddingLeft:18,
           paddingRight:18,
-          paddingTop: 10,
+          paddingTop: 6,
           paddingBottom: 10,
           borderRadius: 12,
+
         },
         sectionTitle: {
           color: 'white',
@@ -190,8 +202,6 @@ const styles = StyleSheet.create({
       color: '#e39612'
     },
 
-
-
  label: {
     color: 'white',
     fontSize: 16,
@@ -210,6 +220,34 @@ const styles = StyleSheet.create({
     // Additional styles for not focused state
   },
 
+  resultText: {
+    fontSize: 18,
+    marginTop: 10,
+    alignItems: 'center',
+    color: 'white', // Adjust the color as needed
+  },
+
+
+  resultRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
+
+  resultItem: {
+    flex: 1,
+    alignItems: 'center',
+  },
+
+  resultLabel: {
+    fontSize: 18,
+    color: 'black', // Adjust the color as needed
+  },
+
+  resultValue: {
+    fontSize: 20,
+    color: 'green', // Set color to green
+  },
 
 });
 
