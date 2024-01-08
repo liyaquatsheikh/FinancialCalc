@@ -257,6 +257,8 @@ const handleCalculate = () => {
 
             setEMI(emi.toFixed(2));
             setTotalInterest(totalInterest.toFixed(2));
+
+
   };
 
 
@@ -397,20 +399,25 @@ const handleCalculate = () => {
 
         <View   style = {styles.ResultSection}   >
 
-                     <Text style={styles.sectionTitle}>EMI Per Month</Text>
+                     <Text style={styles.sectionTitle}>Result</Text>
                             {/* Display EMI and Total Interest in a row */}
-                                  {emi !== null && totalInterest !== null && (
-                                    <View style={styles.resultRow}>
-                                      <View style={styles.resultItem}>
-                                        <Text style={styles.resultLabel}>EMI:</Text>
-                                        <Text style={styles.resultValue}>{emi}</Text>
-                                      </View>
 
-                                      <View style={styles.resultItem}>
-                                        <Text style={styles.resultLabel}>Total Interest:</Text>
+                                  {emi !== null && totalInterest !== null && (
+  <View >
+                                        <Text style={styles.resultLabel}>Monthly Repayment (EMI) </Text>
+                                        <Text style={styles.resultValue}>{emi}</Text>
+
+                                        <Text style={styles.resultLabel}>Principle Amount (P):</Text>
+                                        <Text style={styles.resultValue}>{principleAmount}</Text>
+
+
+                                        <Text style={styles.resultLabel}>Total Interest (I):</Text>
                                         <Text style={styles.resultValue}>{totalInterest}</Text>
+
+
+                                        <Text style={styles.resultLabel}>Total Paid (P+I):</Text>
+                                         <Text style={styles.resultValue}>{(parseFloat(principleAmount) + parseFloat(totalInterest)).toFixed(2)}</Text>
                                       </View>
-                                    </View>
                                   )}
          </View>
 

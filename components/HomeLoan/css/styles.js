@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
           paddingTop: 6,
           paddingBottom: 10,
           borderRadius: 12,
+        justifyContent: 'center',
           alignItems : 'center'
         },
 
@@ -223,31 +224,24 @@ const styles = StyleSheet.create({
   resultText: {
     fontSize: 18,
     marginTop: 10,
-    alignItems: 'center',
     color: 'white', // Adjust the color as needed
   },
 
+   resultLabel: {
+       fontSize: 14,
+       color: 'white', // Adjust the color as needed
+       padding: 12,
+       textAlign: 'center', // Center the text
 
-  resultRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 10,
-  },
+     },
 
-  resultItem: {
-    flex: 1,
-    alignItems: 'center',
-  },
+     resultValue: {
+       fontSize: 18,
+       color: 'green', // Set color to green
+       textAlign: 'center', // Center the text
 
-  resultLabel: {
-    fontSize: 18,
-    color: 'black', // Adjust the color as needed
-  },
-
-  resultValue: {
-    fontSize: 20,
-    color: 'green', // Set color to green
-  },
+          fontWeight: 'bold',
+     },
 
 });
 
