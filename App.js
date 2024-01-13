@@ -10,6 +10,9 @@ const Stack = createNativeStackNavigator();
 export default function App() {
 
   return (
+
+
+
        <NavigationContainer>
          <Stack.Navigator initialRouteName="Home">
                 <Stack.Screen name="Home"   component = {HomeScreen}
@@ -37,7 +40,20 @@ export default function App() {
                                     },
                                 }}
                 />
-                <Stack.Screen name="CarLoan"   component = {CarLoan} />
+                <Stack.Screen name="Car Loan"   component = {CarLoan}
+
+
+                 options={{
+                                                    title: "Car Loan",
+                                                    headerStyle:{
+                                                    backgroundColor: "#3b3a38",
+                                                    },
+                                                    headerTintColor: "#fff",
+                                                    headerTitleStyle:{
+                                                    fontWeight: "bold"
+                                                    },
+                                                }}
+                />
               <Stack.Screen name="PersonalLoan"   component = {PersonalLoan} />
          </Stack.Navigator>
        </NavigationContainer>

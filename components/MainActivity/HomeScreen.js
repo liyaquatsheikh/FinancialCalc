@@ -39,7 +39,7 @@ export default function HomeScreen( { navigation } ) {
            <Text style={styles.buttonText}>Home Loan</Text>
          </TouchableOpacity>
 
-         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("CarLoan")} >
+         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Car Loan")} >
                 <Text  style={styles.innerText}  >CL</Text>
                 <Text style={styles.buttonText}>Car Loan</Text>
          </TouchableOpacity>

@@ -1,8 +1,22 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, ScrollView,StatusBar, SafeAreaView } from 'react-native';
-
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 const { width } = Dimensions.get('window');
+
+const Login = () => (
+<View  style={{flex:1, backgroundColor:"red", alignItems: "center", justifyContent : "center"}}>
+ <Text >Login ---  </Text>
+</View>
+);
+
+
+const SignUp = () => (
+  <View   style={{flex:1, backgroundColor:"red", alignItems: "center", justifyContent : "center"}}>
+    <Text>SignUp --- </Text>
+  </View>
+);
+
 
 export default function CarLoan() {
 
@@ -10,44 +24,18 @@ export default function CarLoan() {
  const handleButtonPress = (buttonName) => {
     alert(`Button ${buttonName} clicked!`);
   };
+
+  const Tab = createMaterialTopTabNavigator();
+
   return (
-
    <SafeAreaView style={styles.container}>
+
   <StatusBar   barStyle="light-content"   backgroundColor="#3b3a38"/>
-
-
-  <ScrollView   contentContainerStyle={styles.TopScrollView}>
-
-
-
-
-  <ScrollView   contentContainerStyle={styles.scrollView}>
-
-
-<View   style = {styles.section}   >
-
- <Text style={styles.sectionTitle}>Car Loan</Text>
-
-
-         <TouchableOpacity style={styles.button} onPress={() => handleButtonPress('Car')} >
-                <Text  style={styles.innerText}  >CL</Text>
-                <Text style={styles.buttonText}>Car Loan</Text>
-         </TouchableOpacity>
-
-
-         <TouchableOpacity style={styles.button} onPress={() => handleButtonPress('TCwo')} >
-                <Text  style={styles.innerText}  >BL </Text>
-                <Text style={styles.buttonText}>Business Loan</Text>
-         </TouchableOpacity>
-
-         </View>
-
-
-
-       </ScrollView>
-
-       </ScrollView>
-       </SafeAreaView>
+    <Tab.Navigator>
+        <Tab.Screen name="Login" component={Login}/>
+        <Tab.Screen name="SignUp" component={SignUp}/>
+    </Tab.Navigator>
+ </SafeAreaView>
   );
 }
 
