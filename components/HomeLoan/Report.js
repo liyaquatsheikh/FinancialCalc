@@ -1,10 +1,6 @@
-import React , { useState }  from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-
-import { useRoute } from '@react-navigation/native';
-
-
-
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, FlatList, ScrollView } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import Globals from './AppContext';
 
 const TableRow = ({ data }) => {
@@ -14,10 +10,10 @@ const TableRow = ({ data }) => {
 
   return (
     <View style={styles.tableRow}>
-      {data.map((cell, index) => (
-        <View key={index} style={styles.cell}>
-          <Text>{cell}</Text>
-        </View>
+      {data.map((item, index) => (
+        <Text key={index} style={styles.tableCell}>
+          {item}
+        </Text>
       ))}
     </View>
   );
@@ -38,59 +34,90 @@ const Table = ({ headers, rows }) => {
   );
 };
 
-const generateNumberRows = () => {
-  const rows = [];
-  for (let i = 1; i <= 10; i++) {
-    rows.push([i.toString(), (i * 2).toString(), (i * 3).toString(), (i * 4).toString()]);
-  }
-  return rows;
+const Report = () => {
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      console.log('Tab screen is focused, executing the method.');
+      // Your logic here
+    }
+  }, [isFocused]);
+
+  return (
+    <ScrollView style ={styles.container}>
+      {Globals.loanDetails.length > 0 && (
+        <View style={styles.tableContainer}>
+          <View style={styles.tableHeader}>
+            <Text style={styles.tableHeaderText}>Month</Text>
+            <Text style={styles.tableHeaderText}>Interest Paid</Text>
+            <Text style={styles.tableHeaderText}>Principle Paid</Text>
+            <Text style={styles.tableHeaderText}>Balance Amount</Text>
+          </View>
+
+          <FlatList
+            data={Globals.loanDetails}
+            keyExtractor={(item) => item.month.toString()}
+            renderItem={({ item }) => (
+              <TableRow
+                data={[
+                  item.month,
+                  item.monthlyInterest,
+                  item.monthlyPrincipal,
+                  item.remainingAmount,
+                ]}
+              />
+            )}
+          />
+        </View>
+      )}
+    </ScrollView>
+  );
 };
 
-const headers = ['Number', 'Double', 'Triple', 'Quadruple'];
-const rows = generateNumberRows();
-
 const styles = StyleSheet.create({
+  tableContainer: {
+    marginTop: 0,
+  },
+  tableHeader: {
+    flexDirection: 'row',
+    backgroundColor: '#3b3a38',
+    padding: 10,
+    borderBottomWidth: 1,
+    borderColor: '#333230',
+  },
+  tableHeaderText: {
+    flex: 1,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: 'white'
+  },
+
+  container : {
+    backgroundColor: '#333230'
+  },
+
+  tableRow: {
+    flexDirection: 'row',
+    borderBottomWidth: 0.6,
+    borderColor: '#cfa006',
+  },
+  tableCell: {
+    flex: 1,
+    textAlign: 'center',
+    padding: 8,
+    fontSize: 16,
+    color: 'white',
+  },
   table: {
     borderWidth: 1,
     borderColor: '#000',
     margin: 10,
   },
-  tableRow: {
-    flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderColor: '#000',
-  },
   headerRow: {
     backgroundColor: '#f0f0f0',
     fontWeight: 'bold',
   },
-  cell: {
-    flex: 1,
-    padding: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
 });
 
-export default function Report() {
-
-
-
-
-  return (
-    <View>
-         <TouchableOpacity onPress={() => console.log(Globals)}>
-                <Text>Show Values</Text>
-              </TouchableOpacity>
-
-              {Globals.emi !== null && Globals.totalInterest !== null && (
-                <View>
-                  <Text>EMI: {Globals.emi}</Text>
-                  <Text>Total Interest: {Globals.totalInterest}</Text>
-                </View>
-              )}
-
-      <Table headers={headers} rows={rows} />
-    </View>
-  );
-}
+export default Report;

@@ -227,7 +227,7 @@ export default function Input() {
  const handleButtonPress = (buttonName) => {
     alert(`Button ${buttonName} clicked!`);
   };
-
+    const [loanDetails, setLoanDetails] = useState([]);
 
 
 const handleCalculate = () => {
@@ -236,12 +236,17 @@ const handleCalculate = () => {
     const annualInterestRateValue = parseFloat(annualInterestRate);
     const tenureValue = parseFloat(tenure);
 
+
     if (isNaN(principleAmountValue) || isNaN(annualInterestRateValue) || isNaN(tenureValue)) {
       // Display an error message or handle invalid input
       console.error('Invalid input. Please enter valid numeric values.');
       return;
     }
 
+
+    Globals.principleAmount = principleAmountValue;
+    Globals.annualInterestRate = annualInterestRateValue;
+    Globals.tenure = tenureValue;
     // Convert annual interest rate to monthly interest rate
     const monthlyInterestRate = (annualInterestRateValue / 12) / 100;
 
@@ -262,14 +267,44 @@ const handleCalculate = () => {
             setTotalInterest(totalInterest.toFixed(2));
 
 
-  Globals.emi = emi;
-    Globals.totalInterest = totalInterest;
+        // Calculate Monthly interest.
+
+    const details = [];
+    let remainingAmount = principleAmountValue;
+
+
+
+ for (let i = 1; i <= tenure; i++) {
+      // Calculate EMI
+      const emi = (principleAmountValue * monthlyInterestRate) / (1 - Math.pow(1 + monthlyInterestRate, -tenureValue));
+
+      // Calculate monthly interest
+      const monthlyInterest = remainingAmount * monthlyInterestRate;
+      const monthlyPrincipal = emi - monthlyInterest;
+
+      // Calculate remaining amount after paying i EMIs
+      remainingAmount =
+        principleAmountValue *
+        (Math.pow(1 + monthlyInterestRate, tenureValue) - Math.pow(1 + monthlyInterestRate, i)) /
+        (Math.pow(1 + monthlyInterestRate, tenureValue) - 1);
+
+      details.push({
+        month: i,
+        emi: emi.toFixed(2),
+        monthlyInterest: monthlyInterest.toFixed(2),
+        monthlyPrincipal: monthlyPrincipal.toFixed(2),
+        remainingAmount: remainingAmount.toFixed(2),
+      });
 
 
 
 
+    }
+    Globals.loanDetails = details;
+    setLoanDetails(details);
 
   };
+
 
   return (
 

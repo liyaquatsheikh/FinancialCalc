@@ -31,6 +31,7 @@ const LoanCalculator = () => {
 
       // Calculate monthly interest
       const monthlyInterest = remainingAmount * monthlyInterestRate;
+      const monthlyPrincipal = emi - monthlyInterest;
 
       // Calculate remaining amount after paying i EMIs
       remainingAmount =
@@ -42,6 +43,7 @@ const LoanCalculator = () => {
         month: i,
         emi: emi.toFixed(2),
         monthlyInterest: monthlyInterest.toFixed(2),
+        monthlyPrincipal: monthlyPrincipal.toFixed(2),
         remainingAmount: remainingAmount.toFixed(2),
       });
     }
@@ -51,13 +53,14 @@ const LoanCalculator = () => {
 
 
 
-  const tableHead = ['Month', 'EMI', 'Monthly Interest', 'Remaining Amount'];
+  const tableHead = ['Month', 'EMI', 'Monthly Interest', ' Monthly Principle','Remaining Amount'];
 
    const renderTableRow = ({ item }) => (
       <View style={styles.tableRow}>
         <Text style={styles.tableCell}>{item.month}</Text>
         <Text style={styles.tableCell}>{item.emi}</Text>
         <Text style={styles.tableCell}>{item.monthlyInterest}</Text>
+        <Text style={styles.tableCell}>{item.monthlyPrincipal}</Text>
         <Text style={styles.tableCell}>{item.remainingAmount}</Text>
       </View>
     );
@@ -113,6 +116,7 @@ const LoanCalculator = () => {
             <Text style={styles.tableHeaderText}>Month</Text>
             <Text style={styles.tableHeaderText}>EMI</Text>
             <Text style={styles.tableHeaderText}>Monthly Interest</Text>
+                        <Text style={styles.tableHeaderText}>Monthly Principle</Text>
             <Text style={styles.tableHeaderText}>Remaining Amount</Text>
           </View>
 
