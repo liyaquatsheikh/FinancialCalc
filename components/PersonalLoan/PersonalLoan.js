@@ -1,199 +1,44 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import React, { useState, useRef, useEffect  } from 'react';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-const LoanCalculator = () => {
-  const [loanAmount, setLoanAmount] = useState('');
-  const [interestRate, setInterestRate] = useState('');
-  const [tenureMonths, setTenureMonths] = useState('');
-  const [monthsPaid, setMonthsPaid] = useState('');
-  const [loanDetails, setLoanDetails] = useState([]);
+import {
 
-  const calculateLoanDetails = () => {
-    const principal = parseFloat(loanAmount);
-    const annualInterestRate = parseFloat(interestRate);
-    const tenure = parseFloat(tenureMonths);
-    const months = parseFloat(monthsPaid);
+            StyleSheet, Dimensions,
+            ScrollView,StatusBar,
+            SafeAreaView, TextInput, Text
+        }
+from 'react-native';
+import styles from './css/styles';
+import INPUT from './Input.js';
+import REPORT from './Report.js';
+import GRAPH from './Graph.js';
 
-    if (isNaN(principal) || isNaN(annualInterestRate) || isNaN(tenure)) {
-      alert('Please enter valid numeric values.');
-      return;
-    }
+const { width } = Dimensions.get('window');
 
-    // Convert annual interest rate to monthly interest rate
-    const monthlyInterestRate = (annualInterestRate / 12) / 100;
+export default function HomeLoan() {
 
-    const details = [];
-    let remainingAmount = principal;
-
-    for (let i = 1; i <= tenure; i++) {
-      // Calculate EMI
-      const emi = (principal * monthlyInterestRate) / (1 - Math.pow(1 + monthlyInterestRate, -tenure));
-
-      // Calculate monthly interest
-      const monthlyInterest = remainingAmount * monthlyInterestRate;
-      const monthlyPrincipal = emi - monthlyInterest;
-
-      // Calculate remaining amount after paying i EMIs
-      remainingAmount =
-        principal *
-        (Math.pow(1 + monthlyInterestRate, tenure) - Math.pow(1 + monthlyInterestRate, i)) /
-        (Math.pow(1 + monthlyInterestRate, tenure) - 1);
-
-      details.push({
-        month: i,
-        emi: emi.toFixed(2),
-        monthlyInterest: monthlyInterest.toFixed(2),
-        monthlyPrincipal: monthlyPrincipal.toFixed(2),
-        remainingAmount: remainingAmount.toFixed(2),
-      });
-    }
-
-    setLoanDetails(details);
-  };
-
-
-
-  const tableHead = ['Month', 'EMI', 'Monthly Interest', ' Monthly Principle','Remaining Amount'];
-
-   const renderTableRow = ({ item }) => (
-      <View style={styles.tableRow}>
-        <Text style={styles.tableCell}>{item.month}</Text>
-        <Text style={styles.tableCell}>{item.emi}</Text>
-        <Text style={styles.tableCell}>{item.monthlyInterest}</Text>
-        <Text style={styles.tableCell}>{item.monthlyPrincipal}</Text>
-        <Text style={styles.tableCell}>{item.remainingAmount}</Text>
-      </View>
-    );
+  const Tab = createMaterialTopTabNavigator();
   return (
-    <View style={styles.container}>
-      <Text style={styles.label}>Loan Amount:</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter loan amount"
-        keyboardType="numeric"
-        value={loanAmount}
-        onChangeText={setLoanAmount}
-      />
 
-      <Text style={styles.label}>Interest Rate (%):</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter interest rate"
-        keyboardType="numeric"
-        value={interestRate}
-        onChangeText={setInterestRate}
-      />
-
-      <Text style={styles.label}>Tenure (months):</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter loan tenure in months"
-        keyboardType="numeric"
-        value={tenureMonths}
-        onChangeText={setTenureMonths}
-      />
-
-      <Text style={styles.label}>Months Paid:</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter number of months paid"
-        keyboardType="numeric"
-        value={monthsPaid}
-        onChangeText={setMonthsPaid}
-      />
-
-     <TouchableOpacity style={styles.calculateButton} onPress={calculateLoanDetails}>
-            <Text style={styles.calculateButtonText}>Calculate</Text>
-          </TouchableOpacity>
+ <SafeAreaView style={styles.container}>
+  <StatusBar   barStyle="light-content"   backgroundColor="#3b3a38"/>
 
 
+ <Tab.Navigator
+ screenOptions={{
+    tabBarStyle: { backgroundColor: '#3b3a38' },
+    tabBarActiveTintColor: 'white',
+    tabBarInactiveTintColor: '#8a8a87'
 
+  }}
+                    >
 
-
-      {loanDetails.length > 0 && (
-        <View style={styles.tableContainer}>
-          <View style={styles.tableHeader}>
-            <Text style={styles.tableHeaderText}>Month</Text>
-            <Text style={styles.tableHeaderText}>EMI</Text>
-            <Text style={styles.tableHeaderText}>Monthly Interest</Text>
-                        <Text style={styles.tableHeaderText}>Monthly Principle</Text>
-            <Text style={styles.tableHeaderText}>Remaining Amount</Text>
-          </View>
-
-          <FlatList
-            data={loanDetails}
-            keyExtractor={(item) => item.month.toString()}
-            renderItem={renderTableRow}
-          />
-        </View>
-      )}
-
-
-    </View>
+    <Tab.Screen name="INPUT" component={INPUT}
+    />
+    <Tab.Screen name="REPORT" component={REPORT}/>
+    <Tab.Screen name="GRAPH" component={GRAPH}/>
+    </Tab.Navigator>
+       </SafeAreaView>
   );
-};
+}
 
-const styles = StyleSheet.create({
-
-
-
-  tableContainer: {
-    marginTop: 20,
-  },
-  tableHeader: {
-    flexDirection: 'row',
-    backgroundColor: '#f2f2f2',
-    padding: 10,
-    borderBottomWidth: 1,
-    borderColor: '#ddd',
-  },
-  tableHeaderText: {
-    flex: 1,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  tableRow: {
-    flexDirection: 'row',
-    padding: 10,
-    borderBottomWidth: 1,
-    borderColor: '#ddd',
-  },
-  tableCell: {
-    flex: 1,
-    textAlign: 'center',
-  },
-  container: {
-    flex: 1,
-    padding: 20,
-  },
-  label: {
-    fontSize: 18,
-    marginBottom: 5,
-  },
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 15,
-    paddingLeft: 10,
-  },
-  calculateButton: {
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  calculateButtonText: {
-    color: 'white',
-    fontSize: 16,
-  },
-  resultsContainer: {
-    marginTop: 20,
-  },
-  resultLabel: {
-    fontSize: 16,
-    marginBottom: 5,
-  },
-});
-
-export default LoanCalculator;
